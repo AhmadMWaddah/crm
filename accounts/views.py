@@ -70,4 +70,12 @@ class CustomLogoutView(LogoutView):
     
     def get(self, request, *args, **kwargs):
         """Handle GET requests for logout (for simplicity in development)."""
+        # For security, logout via GET is acceptable in development
+        # In production, consider requiring POST for logout
         return self.post(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        """Handle logout and redirect."""
+        from django.contrib.auth import logout
+        logout(request)
+        return redirect(self.next_page)
