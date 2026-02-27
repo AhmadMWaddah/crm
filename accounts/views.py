@@ -54,3 +54,7 @@ class LoginView(View):
 class CustomLogoutView(LogoutView):
     """Handle user logout."""
     next_page = 'login'
+    
+    def get(self, request, *args, **kwargs):
+        """Handle GET requests for logout (for simplicity in development)."""
+        return self.post(request, *args, **kwargs)

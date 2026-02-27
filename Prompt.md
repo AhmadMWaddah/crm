@@ -164,7 +164,7 @@ Build a **Client Management System** for freelancers or small businesses. Users 
    - Activate virtual environment (`.env_crm`)
    - Run `makemigrations`
    - Run `migrate`
-   - Collect static files (`collectstatic --noinput`)
+   - Collect static files (`collectstatic --noinput`) - skip `--clear` for faster development
    - Run the development server (`runserver`)
    - Make it executable: `chmod +x scripts/dev.sh`
 
@@ -329,14 +329,22 @@ Build a **Client Management System** for freelancers or small businesses. Users 
 
 ### Tasks
 
-1. Add `django.contrib.auth` to `INSTALLED_APPS` (already there by default).
-2. Create templates for login, logout, and signup (use `UserCreationForm` for signup).
-3. Add URL patterns for auth views (or create your own views).
-4. Modify `Client` and `Project` models to include a `user` ForeignKey to `settings.AUTH_USER_MODEL`.
-5. Make and apply migrations.
-6. Update admin to show the user field.
-7. In views, ensure that only objects belonging to the logged-in user are displayed (filter querysets by `request.user`).
-8. Protect views with `@login_required`.
+1. Create a separate `accounts` app for authentication views.
+2. Add `django.contrib.auth` to `INSTALLED_APPS` (already there by default).
+3. Create templates for login, logout, and signup (use `UserCreationForm` for signup).
+4. Add URL patterns for auth views (or create your own views).
+5. Modify `Client` and `Project` models to include a `user` ForeignKey to `settings.AUTH_USER_MODEL`.
+6. Make and apply migrations.
+7. Update admin to show the user field.
+8. In views, ensure that only objects belonging to the logged-in user are displayed (filter querysets by `request.user`).
+9. Protect views with `@login_required`.
+10. Configure authentication settings in `settings.py`:
+    - `LOGIN_REDIRECT_URL = 'dashboard'`
+    - `LOGIN_URL = 'login'`
+    - `LOGOUT_REDIRECT_URL = 'login'`
+11. Configure static files settings:
+    - `STATIC_ROOT = BASE_DIR / 'staticfiles'`
+    - `STATICFILES_DIRS = [BASE_DIR / 'static']`
 
 ### AI Prompts
 
@@ -344,6 +352,7 @@ Build a **Client Management System** for freelancers or small businesses. Users 
 - "How do I add a ForeignKey to the User model in my Client and Project models?"
 - "Write a view that lists only the clients belonging to the logged-in user."
 - "Explain how `@login_required` works and what happens when an unauthenticated user tries to access a protected view."
+- "Why do I need to set STATIC_ROOT and STATICFILES_DIRS in Django settings?"
 
 ---
 
