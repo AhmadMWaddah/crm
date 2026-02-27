@@ -1,0 +1,24 @@
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.env_crm
+  | \.env
+  | __pycache__
+  | migrations
+  | staticfiles
+  | node_modules
+  | \.tox
+  | \.eggs
+  | \*.egg-info
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 88
+skip = [".env_crm", ".env", "migrations", "staticfiles", "node_modules", "__pycache__"]
+skip_glob = ["**/migrations/*", "**/staticfiles/*"]

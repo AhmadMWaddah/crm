@@ -1,0 +1,165 @@
+# =============================================================================
+# Django/Python
+# =============================================================================
+# Environment variables (NEVER commit secrets)
+.env
+.env.production
+.env.local
+
+# Virtual Environment
+.env_crm/
+venv/
+env/
+.venv/
+
+# Database (SQLite)
+db.sqlite3
+*.sqlite3
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+*.log
+local_settings.py
+media/
+staticfiles/
+static/CACHE/
+
+# =============================================================================
+# SASS/CSS
+# =============================================================================
+# SASS cache
+.sass-cache/
+
+# Source maps
+*.css.map
+*.scss.map
+
+# Compiled CSS (if generated)
+*.min.css
+
+# =============================================================================
+# JavaScript/Node
+# =============================================================================
+# Dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist/
+bundle.js
+*.min.js
+
+# =============================================================================
+# Bash Scripts
+# =============================================================================
+# Shell script backups
+*.sh~
+*.bash~
+
+# =============================================================================
+# IDE / Editors
+# =============================================================================
+# JetBrains IDEs (PyCharm, IntelliJ)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# =============================================================================
+# OS Files
+# =============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# =============================================================================
+# Git
+# =============================================================================
+.gitignore
+!.gitignore.example
+
+# =============================================================================
+# Testing & Coverage
+# =============================================================================
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+.coverage.*.*
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.tox/
+
+# =============================================================================
+# Miscellaneous
+# =============================================================================
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Logs
+logs/
+*.log

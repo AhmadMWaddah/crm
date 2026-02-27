@@ -1,0 +1,17 @@
+# =============================================================================
+# Django CRM - Production Dependencies
+# =============================================================================
+# Install with: pip install -r requirements.txt
+# =============================================================================
+
+# Django Framework
+Django==6.0.2
+
+# Environment Variables
+python-decouple==3.8
+
+# ASGI/WSGI Server (for production)
+asgiref==3.11.1
+
+# Database
+sqlparse==0.5.5

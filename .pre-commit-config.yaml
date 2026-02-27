@@ -1,0 +1,43 @@
+# Pre-commit configuration file
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      # Trailing whitespace checker
+      - id: trailing-whitespace
+      # Ensures files end with a newline
+      - id: end-of-file-fixer
+      # Validates YAML syntax
+      - id: check-yaml
+      # Prevents committing large files
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      # Check for merge conflicts
+      - id: check-merge-conflict
+      # Detects private keys
+      - id: detect-private-key
+
+  # Python code formatter (Black)
+  - repo: https://github.com/psf/black
+    rev: 26.1.0
+    hooks:
+      - id: black
+        language_version: python3
+
+  # Python linting (Flake8)
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.3.0
+    hooks:
+      - id: flake8
+        args: ['--max-line-length=88', '--extend-ignore=E203']
+
+  # Python import sorting (isort)
+  - repo: https://github.com/pycqa/isort
+    rev: 8.0.0
+    hooks:
+      - id: isort
+        args: ['--profile', 'black', '--filter-files']

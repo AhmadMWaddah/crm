@@ -1,0 +1,38 @@
+# =============================================================================
+# Django CRM - Development Dependencies
+# =============================================================================
+# Install with: pip install -r requirements-dev.txt
+# This will also install production dependencies from requirements.txt
+# =============================================================================
+
+# Include production requirements
+-r requirements.txt
+
+# Code Formatting
+black==26.1.0
+isort==8.0.0
+
+# Linting
+flake8==7.3.0
+
+# Git Hooks
+pre-commit==4.5.1
+
+# Testing (optional - uncomment when you add tests)
+# pytest==8.0.0
+# pytest-django==4.7.0
+# pytest-cov==4.1.0
+# coverage==7.4.0
+
+# Django Debug Toolbar (for Phase 15 - Performance Optimization)
+# django-debug-toolbar==4.2.0
+
+# HTMX (for Phase 12)
+# django-htmx==1.17.0
+
+# SASS/SCSS (for Phase 11)
+# libsass==0.22.0
+
+# Production Deployment (for Phase 16)
+# whitenoise==6.6.0
+# gunicorn==21.2.0
