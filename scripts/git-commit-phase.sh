@@ -54,7 +54,22 @@ fi
 # Check if remote is configured
 if ! git remote -v | grep -q origin; then
     echo -e "${YELLOW}Warning: No remote 'origin' configured${NC}"
-    echo -e "${YELLOW}You can add one with: git remote add origin <your-repo-url>${NC}"
+    
+    # Check if gh CLI is available
+    if command -v gh &> /dev/null; then
+        echo -e "${BLUE}GitHub CLI detected. Would you like to create a GitHub repo? (y/n)${NC}"
+        read -r response
+        if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+            echo -e "${YELLOW}Creating GitHub repository...${NC}"
+            gh repo create crm --public --source=. --remote=origin --push
+            echo -e "${GREEN}✓ GitHub repository created${NC}"
+        else
+            echo -e "${YELLOW}You can add a remote manually with: git remote add origin <your-repo-url>${NC}"
+        fi
+    else
+        echo -e "${YELLOW}You can add a remote with: git remote add origin <your-repo-url>${NC}"
+        echo -e "${YELLOW}Or install GitHub CLI (gh) for automatic repo creation${NC}"
+    fi
     echo ""
 fi
 

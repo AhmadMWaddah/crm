@@ -193,7 +193,7 @@
         <a href="{% url 'dashboard' %}" class="navbar-brand">CRM</a>
         <ul class="navbar-nav">
             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li><a href="{% url 'client_list' %}" class="{% if request.resolver_match.url_name == 'client_list' or request.resolver_match.url_name.startswith('client_') %}active{% endif %}">Clients</a></li>
+            <li><a href="{% url 'client_list' %}" class="{% if request.resolver_match.url_name == 'client_list' or request.resolver_match.url_name == 'client_create' or request.resolver_match.url_name == 'client_update' or request.resolver_match.url_name == 'client_delete' %}active{% endif %}">Clients</a></li>
             <li><a href="#">Projects</a></li>
             <li><a href="{% url 'logout' %}" class="btn-logout">Logout ({{ user.username }})</a></li>
         </ul>
