@@ -200,9 +200,9 @@ Build a **Client Management System** for freelancers or small businesses. Users 
 
 ## Phase 5: Git Workflow & Branch Strategy
 
-**Goal:** Set up a Git repository with a branch-per-phase workflow for organized development.
+**Goal:** Set up a Git repository with a branch-per-phase workflow for organized development and push to GitHub.
 
-**Concepts:** Git branching, merging, pull requests, version control best practices.
+**Concepts:** Git branching, merging, pull requests, version control best practices, GitHub CLI.
 
 ### Tasks
 
@@ -235,18 +235,34 @@ Build a **Client Management System** for freelancers or small businesses. Users 
 
 5. Create `.github/CODEOWNERS` (optional, for GitHub).
 
-6. Push initial structure to GitHub:
-   ```bash
-   git remote add origin <your-repo-url>
-   git push -u origin master
-   ```
+6. **Create GitHub Repository and Push:**
+   - Install GitHub CLI (`gh`) if not already installed
+   - Create a new repository on GitHub:
+     ```bash
+     gh repo create crm --public --source=. --remote=origin --push
+     ```
+   - Or manually:
+     ```bash
+     git remote add origin <your-repo-url>
+     git push -u origin master
+     ```
+
+7. **Push each phase branch to GitHub:**
+   - After committing a phase, push with:
+     ```bash
+     git push -u origin phase-{n}
+     ```
+   - After merging to master, push master:
+     ```bash
+     git push origin master
+     ```
 
 ### AI Prompts
 
 - "Explain the branch-per-feature workflow and why it's better than committing directly to master."
 - "Generate a bash script that creates a phase branch, stages changes, commits with a message, and pushes to GitHub."
 - "Generate a bash script that merges a phase branch into master and pushes the result."
-- "How do I merge a feature branch into master only if tests pass?"
+- "How do I use GitHub CLI (gh) to create a repository and push my code?"
 - "What's a pull request and when should I use one?"
 
 ---
