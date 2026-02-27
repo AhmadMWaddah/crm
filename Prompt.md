@@ -422,23 +422,26 @@ Build a **Client Management System** for freelancers or small businesses. Users 
 
 ## Phase 11: Basic UI with SASS
 
-**Goal:** Make the app look professional with SASS and a consistent layout.
+**Goal:** Make the app look professional with a consistent layout.
 
-**Concepts:** Template inheritance, static files, HTML/CSS/JavaScript Custom components.
+**Concepts:** Template inheritance, static files, CSS/SASS styling, responsive design.
 
 ### Tasks
 
-1. Create a `base.html` with a navbar (Home, Clients, Projects, Dashboard, Login/Logout).
+1. Create a `base.html` with a navbar (Dashboard, Clients, Projects, Login/Logout).
 2. Extend `base.html` in all your templates.
-3. Style tables, forms, and buttons with SASS classes.
-4. Add messages (success/error) using Django's messages framework and Bootstrap alerts.
-5. Create the SASS directory as smaller modules, and combine it with imports.
+3. Style tables, forms, and buttons with CSS classes (inline CSS for development, SASS for production).
+4. Add messages (success/error) using Django's messages framework.
+5. Create the SASS directory as smaller modules, and combine it with imports (optional - can use inline CSS for simplicity).
+
+**Note:** For faster development, we used inline CSS in the base template. You can refactor to SASS later or keep the inline approach for simplicity.
 
 ### AI Prompts
 
-- "Give me a SASS base template with a responsive navbar and a container for content."
-- "How do I display Django messages for alerts using SASS Styled Components?"
-- "Style my client list table with Custom table classes."
+- "Give me a base template with a responsive navbar and a container for content."
+- "How do I display Django messages for alerts using styled components?"
+- "Style my client list table with custom CSS classes."
+- "Should I use inline CSS, SASS, or a CSS framework for my Django project?"
 
 ---
 
