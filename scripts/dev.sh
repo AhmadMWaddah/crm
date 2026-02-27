@@ -45,9 +45,9 @@ source .env_crm/bin/activate
 echo -e "${YELLOW}[2/4] Running database migrations...${NC}"
 python manage.py migrate
 
-# Collect static files
+# Collect static files (skip --clear for faster development)
 echo -e "${YELLOW}[3/4] Collecting static files...${NC}"
-python manage.py collectstatic --noinput --clear
+python manage.py collectstatic --noinput
 
 # Start development server
 echo -e "${YELLOW}[4/4] Starting development server...${NC}"
