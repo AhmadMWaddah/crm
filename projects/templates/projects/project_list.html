@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Projects - CRM{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>Projects</h2>
+        <a href="{% url 'project_create' %}" class="btn btn-success">+ Add Project</a>
+    </div>
+    
+    {% if projects %}
+    <table>
+        <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Client</th>
+                <th>Status</th>
+                <th>Rate (EGP)</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.name }}</td>
+                <td>{{ project.client.name }}</td>
+                <td>
+                    {% if project.status == 'active' %}
+                    <span style="color: #28a745; font-weight: bold;">● Active</span>
+                    {% elif project.status == 'completed' %}
+                    <span style="color: #6c757d; font-weight: bold;">● Completed</span>
+                    {% elif project.status == 'on_hold' %}
+                    <span style="color: #ffc107; font-weight: bold;">● On Hold</span>
+                    {% endif %}
+                </td>
+                <td>{{ project.rate }}</td>
+                <td>{{ project.created_at|date:"M d, Y" }}</td>
+                <td>
+                    <a href="{% url 'project_update' project.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="{% url 'project_delete' project.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <h3>No projects yet</h3>
+        <p>Get started by adding your first project.</p>
+        <a href="{% url 'project_create' %}" class="btn btn-primary" style="margin-top: 15px;">Add Project</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

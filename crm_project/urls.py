@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('clients/', include('clients.urls')),
+    path('projects/', include('projects.urls')),
     path('dashboard/', dashboard, name='dashboard'),
     path('', lambda request: redirect('dashboard')),
 ]

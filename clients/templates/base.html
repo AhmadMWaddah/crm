@@ -194,7 +194,7 @@
         <ul class="navbar-nav">
             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'client_list' %}" class="{% if request.resolver_match.url_name == 'client_list' or request.resolver_match.url_name == 'client_create' or request.resolver_match.url_name == 'client_update' or request.resolver_match.url_name == 'client_delete' %}active{% endif %}">Clients</a></li>
-            <li><a href="#">Projects</a></li>
+            <li><a href="{% url 'project_list' %}" class="{% if request.resolver_match.url_name == 'project_list' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_update' or request.resolver_match.url_name == 'project_delete' %}active{% endif %}">Projects</a></li>
             <li><a href="{% url 'logout' %}" class="btn-logout">Logout ({{ user.username }})</a></li>
         </ul>
     </nav>
