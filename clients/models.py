@@ -1,10 +1,17 @@
+from django.conf import settings
 from django.db import models
 
 
 class Client(models.Model):
     """
     Represents a client in the CRM system.
+    Each client belongs to a specific user.
     """
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='clients'
+    )
     name = models.CharField(max_length=255)
     email = models.EmailField(blank=True, null=True)
     phone = models.CharField(max_length=20, blank=True, null=True)

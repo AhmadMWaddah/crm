@@ -4,7 +4,8 @@ from .models import Client
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone', 'created_at')
-    search_fields = ('name', 'email', 'phone')
-    list_filter = ('created_at',)
+    list_display = ('name', 'user', 'email', 'phone', 'created_at')
+    search_fields = ('name', 'email', 'phone', 'user__username')
+    list_filter = ('created_at', 'user')
     date_hierarchy = 'created_at'
+    list_select_related = ('user',)

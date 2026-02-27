@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from clients.models import Client
 
@@ -5,6 +6,7 @@ from clients.models import Client
 class Project(models.Model):
     """
     Represents a project linked to a client.
+    Each project belongs to a specific user.
     """
     STATUS_CHOICES = [
         ('active', 'Active'),
@@ -12,6 +14,11 @@ class Project(models.Model):
         ('on_hold', 'On Hold'),
     ]
 
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='projects'
+    )
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     status = models.CharField(
