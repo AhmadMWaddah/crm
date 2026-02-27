@@ -1,14 +1,41 @@
-{% extends 'accounts/base_auth.html' %}
+{% extends 'base.html' %}
 
 {% block title %}Sign Up - CRM{% endblock %}
 
+{% block extra_css %}
+<style>
+    .auth-wrapper {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .helptext {
+        display: block;
+        margin-top: 5px;
+        font-size: 12px;
+        color: #6c757d;
+    }
+    .errorlist {
+        color: #721c24;
+        font-size: 13px;
+        margin-top: 5px;
+        list-style: none;
+        padding: 0;
+    }
+    .errorlist li::before {
+        content: "• ";
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<div class="auth-container">
-    <div class="auth-box">
-        <h1>Create Account</h1>
+<div class="auth-wrapper">
+    <div class="card">
+        <div class="card-header">
+            <h2 style="text-align: center;">Create Account</h2>
+        </div>
         
         {% if form.errors %}
-        <div class="error-message">
+        <div class="alert alert-error">
             {% for field in form %}
                 {% for error in field.errors %}
                     <p>{{ error }}</p>
@@ -25,25 +52,29 @@
             
             <div class="form-group">
                 <label for="id_username">Username</label>
-                <input type="text" name="username" id="id_username" required>
+                <input type="text" name="username" id="id_username" class="form-control" required>
+                <span class="helptext">Required. 150 characters or fewer.</span>
             </div>
             
             <div class="form-group">
                 <label for="id_password1">Password</label>
-                <input type="password" name="password1" id="id_password1" required>
+                <input type="password" name="password1" id="id_password1" class="form-control" required>
+                {{ form.password1.errors }}
+                <span class="helptext">Your password must be at least 8 characters long.</span>
             </div>
             
             <div class="form-group">
                 <label for="id_password2">Confirm Password</label>
-                <input type="password" name="password2" id="id_password2" required>
+                <input type="password" name="password2" id="id_password2" class="form-control" required>
+                {{ form.password2.errors }}
             </div>
             
-            <button type="submit" class="btn">Create Account</button>
+            <button type="submit" class="btn btn-success" style="width: 100%;">Create Account</button>
         </form>
-        
-        <div class="auth-links">
-            Already have an account? <a href="{% url 'login' %}">Sign in</a>
-        </div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 20px; color: #666;">
+        Already have an account? <a href="{% url 'login' %}">Sign in</a>
     </div>
 </div>
 {% endblock %}

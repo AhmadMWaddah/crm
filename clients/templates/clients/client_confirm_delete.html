@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Client - CRM{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Delete Client</h2>
+    </div>
+    
+    <div style="padding: 20px 0;">
+        <p>Are you sure you want to delete the client "<strong>{{ object.name }}</strong>"?</p>
+        <p class="text-muted" style="margin-top: 10px;">This action cannot be undone. All projects associated with this client will also be affected.</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'client_list' %}" class="btn btn-secondary" style="background-color: #6c757d; color: white;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

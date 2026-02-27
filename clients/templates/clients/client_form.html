@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if object %}Edit{% else %}Add{% endif %} Client - CRM{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>{% if object %}Edit{% else %}Add{% endif %} Client</h2>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_name">Name *</label>
+            {{ form.name }}
+        </div>
+        
+        <div class="form-group">
+            <label for="id_email">Email</label>
+            {{ form.email }}
+        </div>
+        
+        <div class="form-group">
+            <label for="id_phone">Phone</label>
+            {{ form.phone }}
+        </div>
+        
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn btn-success">{% if object %}Update{% else %}Create{% endif %} Client</button>
+            <a href="{% url 'client_list' %}" class="btn btn-secondary" style="background-color: #6c757d; color: white;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

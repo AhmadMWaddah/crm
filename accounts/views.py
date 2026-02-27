@@ -10,7 +10,20 @@ from django.urls import reverse_lazy
 @login_required
 def dashboard(request):
     """Dashboard view showing summary for logged-in user."""
-    return render(request, 'accounts/dashboard.html')
+    from clients.models import Client
+    from projects.models import Project
+    
+    # Get counts for the logged-in user
+    clients_count = Client.objects.filter(user=request.user).count()
+    projects_count = Project.objects.filter(user=request.user).count()
+    active_projects_count = Project.objects.filter(user=request.user, status='active').count()
+    
+    context = {
+        'clients_count': clients_count,
+        'projects_count': projects_count,
+        'active_projects_count': active_projects_count,
+    }
+    return render(request, 'accounts/dashboard.html', context)
 
 
 class SignupView(CreateView):
