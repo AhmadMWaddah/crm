@@ -8,7 +8,7 @@
         <h2>Clients</h2>
         <a href="{% url 'client_create' %}" class="btn btn-success">+ Add Client</a>
     </div>
-    
+
     {% if clients %}
     <table>
         <thead>
@@ -29,7 +29,21 @@
                 <td>{{ client.created_at|date:"M d, Y" }}</td>
                 <td>
                     <a href="{% url 'client_update' client.pk %}" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="{% url 'client_delete' client.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                    <button class="btn btn-success btn-sm"
+                            hx-get="{% url 'client_projects' client.pk %}"
+                            hx-target="#client-projects-{{ client.pk }}"
+                            hx-swap="innerHTML"
+                            hx-trigger="click"
+                            style="margin-left: 5px;">
+                        Show Projects
+                    </button>
+                    <a href="{% url 'client_delete' client.pk %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">Delete</a>
+                </td>
+            </tr>
+            <!-- Row for displaying projects via HTMX -->
+            <tr>
+                <td colspan="5" style="padding: 0;">
+                    <div id="client-projects-{{ client.pk }}" style="padding: 10px 0;"></div>
                 </td>
             </tr>
             {% endfor %}

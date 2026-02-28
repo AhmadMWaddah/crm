@@ -1,0 +1,37 @@
+<div style="margin-top: 15px;">
+    <h4 style="margin-bottom: 10px; color: #333;">Projects for {{ client.name }}</h4>
+    
+    {% if projects %}
+    <div style="display: grid; gap: 10px;">
+        {% for project in projects %}
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 6px; border-left: 4px solid {% if project.status == 'active' %}#28a745{% elif project.status == 'completed' %}#6c757d{% else %}#ffc107{% endif %};">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="color: #333;">{{ project.name }}</strong>
+                    <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">
+                        Status: 
+                        {% if project.status == 'active' %}
+                        <span style="color: #28a745;">Active</span>
+                        {% elif project.status == 'completed' %}
+                        <span style="color: #6c757d;">Completed</span>
+                        {% else %}
+                        <span style="color: #ffc107;">On Hold</span>
+                        {% endif %}
+                        | Rate: {{ project.rate }} EGP/hour
+                    </p>
+                </div>
+                <div>
+                    <a href="{% url 'project_update' project.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="color: #6c757d; font-style: italic;">No projects for this client yet.</p>
+    {% endif %}
+    
+    <div style="margin-top: 15px;">
+        <a href="{% url 'project_create' %}" class="btn btn-success btn-sm">+ Add Project</a>
+    </div>
+</div>

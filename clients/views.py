@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views import View
 from django.urls import reverse_lazy
 from .models import Client
 from .forms import ClientForm
@@ -67,3 +68,15 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
         """Show success message after deletion."""
         messages.success(request, 'Client deleted successfully!')
         return super().delete(request, *args, **kwargs)
+
+
+class ClientProjectsView(LoginRequiredMixin, View):
+    """HTMX view to load projects for a specific client."""
+    
+    def get(self, request, pk):
+        client = get_object_or_404(Client, pk=pk, user=request.user)
+        projects = client.projects.all()
+        return render(request, 'clients/partials/client_projects.html', {
+            'client': client,
+            'projects': projects
+        })
