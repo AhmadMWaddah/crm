@@ -59,7 +59,15 @@
 {% block content %}
 <div class="welcome-box">
     <h1>Welcome, {{ user.username }}!</h1>
-    <p>This is your personal dashboard. Start managing your clients and projects.</p>
+    <p style="margin-bottom: 20px;">This is your personal dashboard. Start managing your clients and projects.</p>
+    
+    <div class="quick-actions">
+        <h3 style="margin-bottom: 15px; color: #333; font-size: 16px;">Quick Actions</h3>
+        <a href="{% url 'client_create' %}" class="btn btn-success">+ Add Client</a>
+        <a href="{% url 'client_list' %}" class="btn btn-primary">View Clients</a>
+        <a href="{% url 'project_create' %}" class="btn btn-success">+ Add Project</a>
+        <a href="{% url 'project_list' %}" class="btn btn-primary">View Projects</a>
+    </div>
 </div>
 
 <div class="stats-grid">
@@ -75,13 +83,5 @@
         <h3>Active Projects</h3>
         <div class="number">{{ active_projects_count }}</div>
     </div>
-</div>
-
-<div class="quick-actions">
-    <h3>Quick Actions</h3>
-    <a href="{% url 'client_create' %}" class="btn btn-success">+ Add Client</a>
-    <a href="{% url 'client_list' %}" class="btn btn-primary">View Clients</a>
-    <a href="{% url 'project_create' %}" class="btn btn-success">+ Add Project</a>
-    <a href="{% url 'project_list' %}" class="btn btn-primary">View Projects</a>
 </div>
 {% endblock %}
