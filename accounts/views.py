@@ -59,7 +59,12 @@ class LoginView(View):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            # Get the next parameter from the query string
+            next_url = request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
             return redirect('dashboard')
+        # Return form with errors
         return render(request, self.template_name, {'form': form})
 
 
