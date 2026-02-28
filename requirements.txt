@@ -20,4 +20,4 @@ gunicorn==25.1.0
 whitenoise==6.12.0
 
 # Database (PostgreSQL for production)
-# psycopg2-binary==2.9.9  # Uncomment for PostgreSQL
+psycopg2-binary==2.9.9  # PostgreSQL adapter
