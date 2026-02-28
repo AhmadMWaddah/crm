@@ -40,6 +40,12 @@ class Project(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['user', '-created_at']),
+            models.Index(fields=['user', 'status']),
+            models.Index(fields=['client']),
+            models.Index(fields=['status']),
+        ]
 
     def __str__(self):
         return f'{self.name} ({self.client.name})'

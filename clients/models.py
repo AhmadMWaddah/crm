@@ -20,6 +20,11 @@ class Client(models.Model):
     class Meta:
         ordering = ['-created_at']
         verbose_name_plural = 'clients'
+        indexes = [
+            models.Index(fields=['user', '-created_at']),
+            models.Index(fields=['name']),
+            models.Index(fields=['email']),
+        ]
 
     def __str__(self):
         return self.name
