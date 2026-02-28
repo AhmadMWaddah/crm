@@ -10,6 +10,9 @@ Django==6.0.2
 # Environment Variables
 python-decouple==3.8
 
+# Database URL Parser
+dj-database-url==3.1.2
+
 # HTMX Integration
 django-htmx==1.27.0
 
@@ -19,5 +22,5 @@ gunicorn==25.1.0
 # Static Files Serving
 whitenoise==6.12.0
 
-# Database (PostgreSQL for production)
-psycopg2-binary==2.9.9  # PostgreSQL adapter
+# PostgreSQL Database (Production)
+psycopg2-binary==2.9.11

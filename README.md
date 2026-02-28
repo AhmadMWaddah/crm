@@ -138,6 +138,50 @@ This project uses a branch-per-phase workflow:
 
 ## 🚢 Deployment
 
+### Deploy to PythonAnywhere
+
+**Step 1: Create PostgreSQL Database**
+1. Login to [PythonAnywhere](https://www.pythonanywhere.com/)
+2. Go to **Databases** tab
+3. Under "Create a new database", enter a name (e.g., `crm-db`)
+4. Click **Create**
+5. Note your database credentials:
+   - Database name: `yourusername$crm-db`
+   - Database host: `epg-01.rackdc.com` (or similar)
+   - Username: `yourusername`
+   - Password: Your PythonAnywhere password
+
+**Step 2: Configure Web App**
+1. Go to **Web** tab
+2. Click **Add a new web app**
+3. Choose **Manual configuration**
+4. Select **Python 3.10** (or latest available)
+
+**Step 3: Configure WSGI File**
+1. In Web tab, click WSGI configuration file link
+2. Uncomment the Django section
+3. Set:
+   ```python
+   os.environ['DJANGO_SETTINGS_MODULE'] = 'crm_project.settings'
+   ```
+4. Save
+
+**Step 4: Set Environment Variables**
+1. Go to **Web** tab → **Virtualenv**
+2. Set virtualenv path to your project
+3. Add environment variables:
+   ```
+   SECRET_KEY=your-secret-key
+   DEBUG=False
+   ALLOWED_HOSTS=yourusername.pythonanywhere.com
+   DATABASE_URL=postgresql://yourusername:password@epg-01.rackdc.com/yourusername$crm-db
+   ```
+
+**Step 5: Deploy**
+1. Go to **Web** tab
+2. Click **Reload** button
+3. Visit your site: `https://yourusername.pythonanywhere.com/`
+
 ### Deploy to Render
 
 1. Create a new Web Service on Render
@@ -146,6 +190,7 @@ This project uses a branch-per-phase workflow:
    - `SECRET_KEY`
    - `DEBUG=False`
    - `ALLOWED_HOSTS`
+   - `DATABASE_URL` (Render auto-provides this)
 4. Deploy!
 
 ### Environment Variables for Production
