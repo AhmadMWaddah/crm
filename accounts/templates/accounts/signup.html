@@ -33,46 +33,53 @@
         <div class="card-header">
             <h2 style="text-align: center;">Create Account</h2>
         </div>
-        
+
         {% if form.errors %}
         <div class="alert alert-error">
             {% for field in form %}
                 {% for error in field.errors %}
-                    <p>{{ error }}</p>
+                    <p style="margin: 5px 0;">{{ error }}</p>
                 {% endfor %}
             {% endfor %}
             {% for error in form.non_field_errors %}
-                <p>{{ error }}</p>
+                <p style="margin: 5px 0;">{{ error }}</p>
             {% endfor %}
         </div>
         {% endif %}
-        
+
         <form method="post">
             {% csrf_token %}
-            
+
             <div class="form-group">
-                <label for="id_username">Username</label>
-                <input type="text" name="username" id="id_username" class="form-control" required>
-                <span class="helptext">Required. 150 characters or fewer.</span>
+                <label for="id_username">Username *</label>
+                <input type="text" name="username" id="id_username" class="form-control" required value="{{ form.username.value|default:'' }}">
+                {% if form.username.errors %}
+                    <p style="color: #721c24; font-size: 13px; margin-top: 5px;">{{ form.username.errors.0 }}</p>
+                {% endif %}
+                <span class="helptext">Letters, numbers, and @/./+/-/_ characters only. No spaces.</span>
             </div>
-            
+
             <div class="form-group">
-                <label for="id_password1">Password</label>
+                <label for="id_password1">Password *</label>
                 <input type="password" name="password1" id="id_password1" class="form-control" required>
-                {{ form.password1.errors }}
-                <span class="helptext">Your password must be at least 8 characters long.</span>
+                {% if form.password1.errors %}
+                    <p style="color: #721c24; font-size: 13px; margin-top: 5px;">{{ form.password1.errors.0 }}</p>
+                {% endif %}
+                <span class="helptext">At least 8 characters. Avoid common passwords.</span>
             </div>
-            
+
             <div class="form-group">
-                <label for="id_password2">Confirm Password</label>
+                <label for="id_password2">Confirm Password *</label>
                 <input type="password" name="password2" id="id_password2" class="form-control" required>
-                {{ form.password2.errors }}
+                {% if form.password2.errors %}
+                    <p style="color: #721c24; font-size: 13px; margin-top: 5px;">{{ form.password2.errors.0 }}</p>
+                {% endif %}
             </div>
-            
+
             <button type="submit" class="btn btn-success" style="width: 100%;">Create Account</button>
         </form>
     </div>
-    
+
     <div style="text-align: center; margin-top: 20px; color: #666;">
         Already have an account? <a href="{% url 'login' %}">Sign in</a>
     </div>
