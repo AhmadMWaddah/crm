@@ -4,12 +4,23 @@
 
 {% block content %}
 <div class="card">
-    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
         <h2>Clients</h2>
-        <a href="{% url 'client_create' %}" class="btn btn-success">+ Add Client</a>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" 
+                   id="client-search"
+                   placeholder="Search clients..." 
+                   class="form-control"
+                   style="width: 250px;"
+                   value="{{ search_query }}"
+                   hx-get="{% url 'client_search' %}"
+                   hx-trigger="keyup changed delay:300ms"
+                   hx-target="#client-table-body"
+                   hx-swap="innerHTML">
+            <a href="{% url 'client_create' %}" class="btn btn-success">+ Add Client</a>
+        </div>
     </div>
 
-    {% if clients %}
     <table>
         <thead>
             <tr>
@@ -20,41 +31,9 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
-            {% for client in clients %}
-            <tr>
-                <td>{{ client.name }}</td>
-                <td>{{ client.email|default:"<span class='text-muted'>N/A</span>" }}</td>
-                <td>{{ client.phone|default:"<span class='text-muted'>N/A</span>" }}</td>
-                <td>{{ client.created_at|date:"M d, Y" }}</td>
-                <td>
-                    <a href="{% url 'client_update' client.pk %}" class="btn btn-primary btn-sm">Edit</a>
-                    <button class="btn btn-success btn-sm"
-                            hx-get="{% url 'client_projects' client.pk %}"
-                            hx-target="#client-projects-{{ client.pk }}"
-                            hx-swap="innerHTML"
-                            hx-trigger="click"
-                            style="margin-left: 5px;">
-                        Show Projects
-                    </button>
-                    <a href="{% url 'client_delete' client.pk %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">Delete</a>
-                </td>
-            </tr>
-            <!-- Row for displaying projects via HTMX -->
-            <tr>
-                <td colspan="5" style="padding: 0;">
-                    <div id="client-projects-{{ client.pk }}" style="padding: 10px 0;"></div>
-                </td>
-            </tr>
-            {% endfor %}
+        <tbody id="client-table-body">
+            {% include 'clients/partials/client_list_body.html' %}
         </tbody>
     </table>
-    {% else %}
-    <div class="empty-state">
-        <h3>No clients yet</h3>
-        <p>Get started by adding your first client.</p>
-        <a href="{% url 'client_create' %}" class="btn btn-primary" style="margin-top: 15px;">Add Client</a>
-    </div>
-    {% endif %}
 </div>
 {% endblock %}

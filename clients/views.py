@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.urls import reverse_lazy
+from django.db.models import Q
 from .models import Client
 from .forms import ClientForm
 
@@ -17,7 +18,23 @@ class ClientListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         """Only return clients belonging to the logged-in user."""
-        return Client.objects.filter(user=self.request.user)
+        queryset = Client.objects.filter(user=self.request.user)
+        
+        # Handle search filtering
+        search_query = self.request.GET.get('search', '')
+        if search_query:
+            queryset = queryset.filter(
+                Q(name__icontains=search_query) |
+                Q(email__icontains=search_query) |
+                Q(phone__icontains=search_query)
+            )
+        
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('search', '')
+        return context
 
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
@@ -79,4 +96,24 @@ class ClientProjectsView(LoginRequiredMixin, View):
         return render(request, 'clients/partials/client_projects.html', {
             'client': client,
             'projects': projects
+        })
+
+
+class ClientSearchView(LoginRequiredMixin, View):
+    """HTMX view for live client search."""
+    
+    def get(self, request):
+        search_query = request.GET.get('search', '')
+        
+        clients = Client.objects.filter(user=request.user)
+        if search_query:
+            clients = clients.filter(
+                Q(name__icontains=search_query) |
+                Q(email__icontains=search_query) |
+                Q(phone__icontains=search_query)
+            )
+        
+        return render(request, 'clients/partials/client_list_body.html', {
+            'clients': clients,
+            'search_query': search_query
         })

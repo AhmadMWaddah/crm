@@ -4,11 +4,26 @@
 
 {% block content %}
 <div class="card">
-    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
         <h2>Projects</h2>
-        <a href="{% url 'project_create' %}" class="btn btn-success">+ Add Project</a>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <select class="form-control" 
+                    style="width: 150px;"
+                    hx-get="."
+                    hx-trigger="change"
+                    hx-target="body"
+                    name="status">
+                <option value="">All Statuses</option>
+                {% for value, label in status_choices %}
+                <option value="{{ value }}" {% if current_status == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+                {% endfor %}
+            </select>
+            <a href="{% url 'project_create' %}" class="btn btn-success">+ Add Project</a>
+        </div>
     </div>
-    
+
     {% if projects %}
     <table>
         <thead>

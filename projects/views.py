@@ -16,7 +16,20 @@ class ProjectListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         """Only return projects belonging to the logged-in user."""
-        return Project.objects.filter(user=self.request.user).select_related('client')
+        queryset = Project.objects.filter(user=self.request.user).select_related('client')
+        
+        # Handle status filtering
+        status = self.request.GET.get('status', '')
+        if status:
+            queryset = queryset.filter(status=status)
+        
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_status'] = self.request.GET.get('status', '')
+        context['status_choices'] = Project.STATUS_CHOICES
+        return context
 
 
 class ProjectCreateView(LoginRequiredMixin, CreateView):

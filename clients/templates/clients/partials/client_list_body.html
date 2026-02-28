@@ -1,0 +1,36 @@
+{% for client in clients %}
+<tr>
+    <td>{{ client.name }}</td>
+    <td>{{ client.email|default:"<span class='text-muted'>N/A</span>" }}</td>
+    <td>{{ client.phone|default:"<span class='text-muted'>N/A</span>" }}</td>
+    <td>{{ client.created_at|date:"M d, Y" }}</td>
+    <td>
+        <a href="{% url 'client_update' client.pk %}" class="btn btn-primary btn-sm">Edit</a>
+        <button class="btn btn-success btn-sm"
+                hx-get="{% url 'client_projects' client.pk %}"
+                hx-target="#client-projects-{{ client.pk }}"
+                hx-swap="innerHTML"
+                hx-trigger="click"
+                style="margin-left: 5px;">
+            Show Projects
+        </button>
+        <a href="{% url 'client_delete' client.pk %}" class="btn btn-danger btn-sm" style="margin-left: 5px;">Delete</a>
+    </td>
+</tr>
+<!-- Row for displaying projects via HTMX -->
+<tr>
+    <td colspan="5" style="padding: 0;">
+        <div id="client-projects-{{ client.pk }}" style="padding: 10px 0;"></div>
+    </td>
+</tr>
+{% empty %}
+<tr>
+    <td colspan="5" style="text-align: center; padding: 40px; color: #6c757d;">
+        {% if search_query %}
+            No clients found matching "{{ search_query }}"
+        {% else %}
+            No clients yet
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
