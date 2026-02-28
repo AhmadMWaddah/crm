@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LogoutView
 from django.views.generic import CreateView, View
 from django.urls import reverse_lazy
 
@@ -64,18 +63,17 @@ class LoginView(View):
         return render(request, self.template_name, {'form': form})
 
 
-class CustomLogoutView(LogoutView):
+class CustomLogoutView(View):
     """Handle user logout."""
-    next_page = 'login'
     
     def get(self, request, *args, **kwargs):
-        """Handle GET requests for logout (for simplicity in development)."""
-        # For security, logout via GET is acceptable in development
-        # In production, consider requiring POST for logout
-        return self.post(request, *args, **kwargs)
-    
-    def post(self, request, *args, **kwargs):
-        """Handle logout and redirect."""
+        """Handle logout via GET request."""
         from django.contrib.auth import logout
         logout(request)
-        return redirect(self.next_page)
+        return redirect('login')
+    
+    def post(self, request, *args, **kwargs):
+        """Handle logout via POST request."""
+        from django.contrib.auth import logout
+        logout(request)
+        return redirect('login')
