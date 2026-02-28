@@ -11,16 +11,30 @@ def dashboard(request):
     """Dashboard view showing summary for logged-in user."""
     from clients.models import Client
     from projects.models import Project
+    from django.db.models import Count
     
     # Get counts for the logged-in user
     clients_count = Client.objects.filter(user=request.user).count()
     projects_count = Project.objects.filter(user=request.user).count()
     active_projects_count = Project.objects.filter(user=request.user, status='active').count()
     
+    # Get projects by status for chart
+    projects_by_status = Project.objects.filter(user=request.user).values('status').annotate(count=Count('id'))
+    status_data = {item['status']: item['count'] for item in projects_by_status}
+    
+    # Get recent clients
+    recent_clients = Client.objects.filter(user=request.user).order_by('-created_at')[:5]
+    
+    # Get recent projects
+    recent_projects = Project.objects.filter(user=request.user).select_related('client').order_by('-created_at')[:5]
+    
     context = {
         'clients_count': clients_count,
         'projects_count': projects_count,
         'active_projects_count': active_projects_count,
+        'status_data': status_data,
+        'recent_clients': recent_clients,
+        'recent_projects': recent_projects,
     }
     return render(request, 'accounts/dashboard.html', context)
 
