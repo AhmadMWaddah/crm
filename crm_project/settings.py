@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -127,6 +128,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',  # For custom static files during development
 ]
+
+# WhiteNoise for static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Authentication settings
 LOGIN_REDIRECT_URL = 'dashboard'

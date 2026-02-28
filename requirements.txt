@@ -10,8 +10,14 @@ Django==6.0.2
 # Environment Variables
 python-decouple==3.8
 
-# ASGI/WSGI Server (for production)
-asgiref==3.11.1
+# HTMX Integration
+django-htmx==1.27.0
 
-# Database
-sqlparse==0.5.5
+# Production Server
+gunicorn==25.1.0
+
+# Static Files Serving
+whitenoise==6.12.0
+
+# Database (PostgreSQL for production)
+# psycopg2-binary==2.9.9  # Uncomment for PostgreSQL
