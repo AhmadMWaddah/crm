@@ -163,3 +163,6 @@ temp/
 # Logs
 logs/
 *.log
+
+#AMW
+Note.txt

@@ -29,7 +29,7 @@ urlpatterns = [
     path('', lambda request: redirect('dashboard')),
 ]
 
-# Add Debug Toolbar URLs in development
+# Add Debug Toolbar URLs only in development
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
