@@ -156,3 +156,7 @@ INTERNAL_IPS = [
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
 }
+
+# Email backend - console for development/production
+# Change to SMTP backend when you add email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
