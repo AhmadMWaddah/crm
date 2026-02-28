@@ -13,7 +13,7 @@ env/
 .venv/
 
 # Database (SQLite)
-db.sqlite3
+# db.sqlite3  # Uncomment for production to avoid committing database
 *.sqlite3
 
 # Python cache
