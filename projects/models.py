@@ -43,7 +43,6 @@ class Project(models.Model):
         indexes = [
             models.Index(fields=['user', '-created_at']),
             models.Index(fields=['user', 'status']),
-            models.Index(fields=['client']),
             models.Index(fields=['status']),
         ]
 
