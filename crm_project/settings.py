@@ -106,7 +106,7 @@ DATABASES = {
         'USER': tmpPostgres.username,
         'PASSWORD': tmpPostgres.password,
         'HOST': tmpPostgres.hostname,
-        'PORT': 5432,
+        'PORT': tmpPostgres.port or 5432,  # Use port from URL or default to 5432
         'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
         'CONN_MAX_AGE': 600,  # Persistent connections for production
     }
