@@ -185,6 +185,17 @@
             margin-bottom: 10px;
             color: #333;
         }
+        /* User menu dropdown styling */
+        .user-menu {
+            cursor: pointer;
+            background-color: #6c757d !important;
+        }
+        .user-menu:hover {
+            background-color: #5a6268 !important;
+        }
+        #user-dropdown a:hover {
+            background-color: #f8f9fa;
+        }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
@@ -195,9 +206,42 @@
             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'client_list' %}" class="{% if request.resolver_match.url_name == 'client_list' or request.resolver_match.url_name == 'client_create' or request.resolver_match.url_name == 'client_update' or request.resolver_match.url_name == 'client_delete' %}active{% endif %}">Clients</a></li>
             <li><a href="{% url 'project_list' %}" class="{% if request.resolver_match.url_name == 'project_list' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_update' or request.resolver_match.url_name == 'project_delete' %}active{% endif %}">Projects</a></li>
-            <li><a href="{% url 'logout' %}" class="btn-logout">Logout ({{ user.username }})</a></li>
+            
+            {% if user.is_authenticated %}
+            <!-- User is logged in - show username with dropdown -->
+            <li style="position: relative;">
+                <a href="#" class="user-menu" onclick="toggleUserMenu(); return false;">
+                    {{ user.username }} ▼
+                </a>
+                <div id="user-dropdown" style="display: none; position: absolute; right: 0; top: 100%; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.2); border-radius: 4px; min-width: 150px; z-index: 1000; margin-top: 5px;">
+                    <a href="{% url 'logout' %}" style="display: block; padding: 10px 15px; color: #dc3545; text-decoration: none; border-bottom: 1px solid #eee; border-radius: 4px;">
+                        Logout
+                    </a>
+                </div>
+            </li>
+            {% else %}
+            <!-- User is not logged in - show SignIn/SignUp -->
+            <li><a href="{% url 'login' %}" style="background-color: #28a745;">Sign In</a></li>
+            <li><a href="{% url 'signup' %}" style="background-color: #007bff;">Sign Up</a></li>
+            {% endif %}
         </ul>
     </nav>
+
+    <script>
+        function toggleUserMenu() {
+            var dropdown = document.getElementById('user-dropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            var dropdown = document.getElementById('user-dropdown');
+            var userMenu = event.target.closest('li');
+            if (dropdown && !userMenu) {
+                dropdown.style.display = 'none';
+            }
+        });
+    </script>
     
     <div class="container">
         {% if messages %}
