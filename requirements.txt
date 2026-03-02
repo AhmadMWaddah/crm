@@ -19,5 +19,8 @@ gunicorn==25.1.0
 # Static Files Serving
 whitenoise==6.12.0
 
-# PostgreSQL Database (Production)
+# PostgreSQL Database (Production - Supabase/Render)
 psycopg2-binary==2.9.11
+
+# Render-specific (optional, for advanced features)
+# render==1.0.0  # Uncomment if needed

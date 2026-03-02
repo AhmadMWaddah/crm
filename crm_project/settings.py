@@ -93,7 +93,7 @@ WSGI_APPLICATION = 'crm_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# Get database URL from environment (with fallback to SQLite for local dev)
+# Get database URL from environment (Render/Supabase provide this)
 DATABASE_URL = config('DATABASE_URL', default='sqlite:///db.sqlite3')
 
 # Parse database URL for PostgreSQL connection
@@ -108,6 +108,7 @@ DATABASES = {
         'HOST': tmpPostgres.hostname,
         'PORT': 5432,
         'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
+        'CONN_MAX_AGE': 600,  # Persistent connections for production
     }
 }
 

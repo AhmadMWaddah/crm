@@ -138,60 +138,78 @@ This project uses a branch-per-phase workflow:
 
 ## 🚢 Deployment
 
-### Deploy to PythonAnywhere
+### Deploy to Render + Supabase (FREE)
 
-**Step 1: Create PostgreSQL Database**
-1. Login to [PythonAnywhere](https://www.pythonanywhere.com/)
-2. Go to **Databases** tab
-3. Under "Create a new database", enter a name (e.g., `crm-db`)
-4. Click **Create**
-5. Note your database credentials:
-   - Database name: `yourusername$crm-db`
-   - Database host: `epg-01.rackdc.com` (or similar)
-   - Username: `yourusername`
-   - Password: Your PythonAnywhere password
+**Part 1: Create Supabase Database**
 
-**Step 2: Configure Web App**
-1. Go to **Web** tab
-2. Click **Add a new web app**
-3. Choose **Manual configuration**
-4. Select **Python 3.10** (or latest available)
-
-**Step 3: Configure WSGI File**
-1. In Web tab, click WSGI configuration file link
-2. Uncomment the Django section
-3. Set:
-   ```python
-   os.environ['DJANGO_SETTINGS_MODULE'] = 'crm_project.settings'
+1. **Sign up** at [Supabase](https://supabase.com) (no credit card needed)
+2. Click **"New Project"**
+3. Fill in:
+   - **Organization**: Your name
+   - **Project name**: `django-crm`
+   - **Database password**: Choose a strong password (save this!)
+   - **Region**: Choose closest to you
+4. Click **"Create new project"**
+5. Wait 2-3 minutes for database to be ready
+6. Go to **Settings** → **Database**
+7. Under **"Connection string"**, select **URI** tab
+8. **Copy the connection string** (looks like):
    ```
-4. Save
-
-**Step 4: Set Environment Variables**
-1. Go to **Web** tab → **Virtualenv**
-2. Set virtualenv path to your project
-3. Add environment variables:
+   postgresql://postgres:[YOUR-PASSWORD]@db.xxxxx.supabase.co:5432/postgres
    ```
-   SECRET_KEY=your-secret-key
-   DEBUG=False
-   ALLOWED_HOSTS=yourusername.pythonanywhere.com
-   DATABASE_URL=postgresql://yourusername:password@epg-01.rackdc.com/yourusername$crm-db
+9. **Replace `[YOUR-PASSWORD]`** with your actual database password
+
+**Part 2: Create Render Web Service**
+
+1. **Sign up** at [Render](https://render.com) (use GitHub for easiest setup)
+2. Click **"New +"** → **"Web Service"**
+3. **Connect your repository**:
+   - Choose **"Connect a repository"**
+   - Select your CRM repository from GitHub
+4. **Configure the service**:
+   ```
+   Name: django-crm
+   Region: Choose closest to you
+   Branch: master
+   Root Directory: (leave blank)
+   Runtime: Python
+   Build Command: pip install -r requirements.txt
+   Start Command: gunicorn crm_project.wsgi:application
+   Instance Type: Free
+   ```
+5. **Add Environment Variables** (click "Advanced" → "Add Environment Variable"):
+   ```
+   Key: SECRET_KEY
+   Value: (generate from Python: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())")
+   
+   Key: DEBUG
+   Value: False
+   
+   Key: ALLOWED_HOSTS
+   Value: <your-app-name>.onrender.com
+   
+   Key: DATABASE_URL
+   Value: postgresql://postgres:YourPassword123@db.xxxxx.supabase.co:5432/postgres?sslmode=require
+   ```
+6. Click **"Create Web Service"**
+7. Wait 5-10 minutes for deployment
+8. Your app is live at: `https://<your-app-name>.onrender.com`
+
+**Part 3: Final Setup**
+
+After deployment, access the **Render dashboard** → **Logs** to see the deployment logs.
+
+To create a superuser, use the **Render Shell**:
+1. Go to your service dashboard
+2. Click **"Shell"** tab
+3. Run:
+   ```bash
+   python manage.py createsuperuser
    ```
 
-**Step 5: Deploy**
-1. Go to **Web** tab
-2. Click **Reload** button
-3. Visit your site: `https://yourusername.pythonanywhere.com/`
+### Alternative: Deploy to PythonAnywhere
 
-### Deploy to Render
-
-1. Create a new Web Service on Render
-2. Connect your GitHub repository
-3. Set environment variables:
-   - `SECRET_KEY`
-   - `DEBUG=False`
-   - `ALLOWED_HOSTS`
-   - `DATABASE_URL` (Render auto-provides this)
-4. Deploy!
+See our detailed PythonAnywhere deployment guide in the wiki.
 
 ### Environment Variables for Production
 
