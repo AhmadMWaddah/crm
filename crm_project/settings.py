@@ -156,6 +156,10 @@ STATICFILES_DIRS = [
 # WhiteNoise for static files in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Ensure staticfiles directory exists (for production)
+import os
+os.makedirs(STATIC_ROOT, exist_ok=True)
+
 # Authentication settings
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_URL = 'login'
