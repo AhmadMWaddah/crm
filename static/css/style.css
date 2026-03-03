@@ -154,11 +154,12 @@ body {
 }
 
 /* =============================================================================
-   Tables - Responsive
+   Tables - Responsive with Data-Label Pattern
    ============================================================================= */
 .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
 }
 
 table {
@@ -182,6 +183,18 @@ table th {
 
 table tr:hover {
     background-color: #f8f9fa;
+}
+
+/* Data attributes for mobile cards */
+table td[data-label]::before {
+    display: none;
+}
+
+/* Action buttons in tables */
+.table-actions {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
 }
 
 /* =============================================================================
@@ -517,25 +530,79 @@ table tr:hover {
     .dashboard-grid {
         grid-template-columns: 1fr;
     }
-    
+
+    /* TABLE-TO-CARD TRANSFORMATION (Data-Label Pattern) */
     .table-responsive {
         margin: 0 -15px;
+        padding: 0 15px;
     }
-    
+
     table {
+        min-width: 100%;
         font-size: 13px;
     }
-    
-    table th,
-    table td {
-        padding: 8px;
+
+    table thead {
+        display: none; /* Hide table headers on mobile */
     }
-    
+
+    table tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--white);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    table td {
+        display: block;
+        padding: 10px 15px;
+        text-align: right;
+        border-bottom: 1px solid #eee;
+        position: relative;
+    }
+
+    table td:last-child {
+        border-bottom: none;
+    }
+
+    /* Show data labels on mobile */
+    table td[data-label]::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--dark-color);
+        position: absolute;
+        left: 15px;
+        text-align: left;
+        display: block;
+    }
+
+    /* Priority hiding - hide less important columns on mobile */
+    table td.priority-low {
+        display: none;
+    }
+
+    /* Show actions as full-width buttons */
+    .table-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #eee;
+    }
+
+    .table-actions .btn {
+        width: 100%;
+        text-align: center;
+    }
+
     .btn {
         padding: 8px 16px;
         font-size: 13px;
     }
-    
+
     .btn-sm {
         padding: 4px 8px;
         font-size: 11px;

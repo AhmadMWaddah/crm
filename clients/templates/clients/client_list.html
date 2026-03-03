@@ -4,37 +4,58 @@
 
 {% block content %}
 <div class="card">
-    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+    <div class="card-header">
         <h2>Clients</h2>
-        <div style="display: flex; gap: 10px; align-items: center;">
-            <input type="text"
-                   id="client-search"
-                   name="search"
-                   placeholder="Search clients..."
-                   class="form-control"
-                   style="width: 250px;"
-                   value="{{ search_query }}"
-                   hx-get="{% url 'client_search' %}"
-                   hx-trigger="keyup changed delay:300ms"
-                   hx-target="#client-table-body"
-                   hx-swap="innerHTML">
-            <a href="{% url 'client_create' %}" class="btn btn-success">+ Add Client</a>
-        </div>
+        <a href="{% url 'client_create' %}" class="btn btn-success">+ Add Client</a>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Created</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="client-table-body">
-            {% include 'clients/partials/client_list_body.html' %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th class="priority-low">Phone</th>
+                    <th class="priority-low">Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                <tr>
+                    <td data-label="Name">{{ client.name }}</td>
+                    <td data-label="Email">{{ client.email|default:"N/A" }}</td>
+                    <td data-label="Phone" class="priority-low">{{ client.phone|default:"N/A" }}</td>
+                    <td data-label="Created" class="priority-low">{{ client.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        <div class="table-actions">
+                            <a href="{% url 'client_update' client.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                            <button class="btn btn-success btn-sm"
+                                    hx-get="{% url 'client_projects' client.pk %}"
+                                    hx-target="#client-projects-{{ client.pk }}"
+                                    hx-swap="innerHTML"
+                                    hx-trigger="click">
+                                Show Projects
+                            </button>
+                            <a href="{% url 'client_delete' client.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Row for displaying projects via HTMX -->
+                <tr>
+                    <td colspan="5" style="padding: 0;">
+                        <div id="client-projects-{{ client.pk }}" style="padding: 10px 0;"></div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 40px; color: #6c757d;">
+                        No clients yet. <a href="{% url 'client_create' %}">Add your first client</a>!
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}
