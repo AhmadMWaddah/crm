@@ -93,8 +93,10 @@
 <script>
     // Projects by Status Chart
     const ctx = document.getElementById('statusChart').getContext('2d');
+    const isMobile = window.innerWidth <= 768;
+    
     const statusChart = new Chart(ctx, {
-        type: window.innerWidth <= 768 ? 'bar' : 'doughnut',  // Bar chart on mobile, doughnut on desktop
+        type: isMobile ? 'bar' : 'doughnut',  // Bar chart on mobile, doughnut on desktop
         data: {
             labels: [{% for status, count in status_data.items %}'{{ status|title }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
             datasets: [{
@@ -112,28 +114,39 @@
             maintainAspectRatio: true,
             plugins: {
                 legend: {
+                    display: true,  // Always show legend
                     position: 'bottom',
                     labels: {
                         padding: 15,
                         font: {
-                            size: 12
-                        }
+                            size: isMobile ? 11 : 12  // Smaller font on mobile
+                        },
+                        usePointStyle: isMobile  // Use point style on mobile for better visibility
                     }
                 }
             },
-            scales: window.innerWidth <= 768 ? {
+            scales: isMobile ? {
                 x: {
                     display: true,
                     ticks: {
                         font: {
                             size: 10
                         }
+                    },
+                    grid: {
+                        display: false
                     }
                 },
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        stepSize: 1
+                        stepSize: 1,
+                        font: {
+                            size: 10
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0,0,0,0.05)'
                     }
                 }
             } : {}
