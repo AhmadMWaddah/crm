@@ -94,7 +94,7 @@
     // Projects by Status Chart
     const ctx = document.getElementById('statusChart').getContext('2d');
     const statusChart = new Chart(ctx, {
-        type: 'doughnut',
+        type: window.innerWidth <= 768 ? 'bar' : 'doughnut',  // Bar chart on mobile, doughnut on desktop
         data: {
             labels: [{% for status, count in status_data.items %}'{{ status|title }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
             datasets: [{
@@ -120,7 +120,23 @@
                         }
                     }
                 }
-            }
+            },
+            scales: window.innerWidth <= 768 ? {
+                x: {
+                    display: true,
+                    ticks: {
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            } : {}
         }
     });
 </script>

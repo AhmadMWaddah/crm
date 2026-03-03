@@ -23,7 +23,11 @@
             <tbody>
                 {% for client in clients %}
                 <tr>
-                    <td data-label="Name">{{ client.name }}</td>
+                    <td>
+                        <span class="client-name-link" onclick="openClientModal({{ client.id }}, '{{ client.name }}', '{{ client.email|default:"N/A" }}', '{{ client.phone|default:"N/A" }}', '{{ client.created_at|date:"M d, Y" }}')">
+                            {{ client.name }}
+                        </span>
+                    </td>
                     <td data-label="Email">{{ client.email|default:"N/A" }}</td>
                     <td data-label="Phone" class="priority-low">{{ client.phone|default:"N/A" }}</td>
                     <td data-label="Created" class="priority-low">{{ client.created_at|date:"M d, Y" }}</td>
@@ -58,4 +62,62 @@
         </table>
     </div>
 </div>
+
+<!-- Client Details Modal -->
+<div id="client-modal" class="modal-overlay" onclick="closeClientModal(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-client-name">Client Details</h3>
+            <button class="modal-close" onclick="closeClientModalBtn()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="detail-row">
+                <span class="detail-label">Name:</span>
+                <span class="detail-value" id="modal-client-name-value"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value" id="modal-client-email"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Phone:</span>
+                <span class="detail-value" id="modal-client-phone"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Created:</span>
+                <span class="detail-value" id="modal-client-created"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Actions:</span>
+                <div class="table-actions" style="margin-top: 10px;">
+                    <a href="#" id="modal-client-edit" class="btn btn-primary btn-sm">Edit Client</a>
+                    <a href="#" id="modal-client-projects" class="btn btn-success btn-sm">View Projects</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openClientModal(id, name, email, phone, created) {
+    document.getElementById('modal-client-name').textContent = name;
+    document.getElementById('modal-client-name-value').textContent = name;
+    document.getElementById('modal-client-email').textContent = email;
+    document.getElementById('modal-client-phone').textContent = phone;
+    document.getElementById('modal-client-created').textContent = created;
+    document.getElementById('modal-client-edit').href = '/clients/' + id + '/';
+    document.getElementById('modal-client-projects').href = '/projects/?client=' + id;
+    document.getElementById('client-modal').classList.add('active');
+}
+
+function closeClientModal(event) {
+    if (event.target === document.getElementById('client-modal')) {
+        document.getElementById('client-modal').classList.remove('active');
+    }
+}
+
+function closeClientModalBtn() {
+    document.getElementById('client-modal').classList.remove('active');
+}
+</script>
 {% endblock %}

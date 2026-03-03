@@ -39,7 +39,11 @@
             <tbody>
                 {% for project in projects %}
                 <tr>
-                    <td data-label="Project">{{ project.name }}</td>
+                    <td>
+                        <span class="project-name-link" onclick="openProjectModal({{ project.id }}, '{{ project.name }}', '{{ project.client.name }}', '{{ project.get_status_display }}', '{{ project.rate }}', '{{ project.created_at|date:"M d, Y" }}')">
+                            {{ project.name }}
+                        </span>
+                    </td>
                     <td data-label="Client">{{ project.client.name }}</td>
                     <td data-label="Status">
                         {% if project.status == 'active' %}
@@ -70,4 +74,67 @@
         </table>
     </div>
 </div>
+
+<!-- Project Details Modal -->
+<div id="project-modal" class="modal-overlay" onclick="closeProjectModal(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-project-name">Project Details</h3>
+            <button class="modal-close" onclick="closeProjectModalBtn()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="detail-row">
+                <span class="detail-label">Project:</span>
+                <span class="detail-value" id="modal-project-name-value"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Client:</span>
+                <span class="detail-value" id="modal-project-client"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span class="detail-value" id="modal-project-status"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Rate:</span>
+                <span class="detail-value" id="modal-project-rate"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Created:</span>
+                <span class="detail-value" id="modal-project-created"></span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Actions:</span>
+                <div class="table-actions" style="margin-top: 10px;">
+                    <a href="#" id="modal-project-edit" class="btn btn-primary btn-sm">Edit Project</a>
+                    <a href="#" id="modal-project-client-link" class="btn btn-success btn-sm">View Client</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openProjectModal(id, name, client, status, rate, created) {
+    document.getElementById('modal-project-name').textContent = name;
+    document.getElementById('modal-project-name-value').textContent = name;
+    document.getElementById('modal-project-client').textContent = client;
+    document.getElementById('modal-project-status').textContent = status;
+    document.getElementById('modal-project-rate').textContent = rate + ' EGP/hour';
+    document.getElementById('modal-project-created').textContent = created;
+    document.getElementById('modal-project-edit').href = '/projects/' + id + '/';
+    document.getElementById('modal-project-client-link').href = '/clients/';
+    document.getElementById('project-modal').classList.add('active');
+}
+
+function closeProjectModal(event) {
+    if (event.target === document.getElementById('project-modal')) {
+        document.getElementById('project-modal').classList.remove('active');
+    }
+}
+
+function closeProjectModalBtn() {
+    document.getElementById('project-modal').classList.remove('active');
+}
+</script>
 {% endblock %}

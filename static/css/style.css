@@ -197,6 +197,95 @@ table td[data-label]::before {
     flex-wrap: wrap;
 }
 
+/* Clickable name for details */
+.client-name-link,
+.project-name-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.client-name-link:hover,
+.project-name-link:hover {
+    text-decoration: underline;
+}
+
+/* Details Modal */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--white);
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--dark-color);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--gray);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.detail-row {
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    width: 120px;
+    flex-shrink: 0;
+}
+
+.detail-value {
+    color: #555;
+    word-break: break-word;
+}
+
 /* =============================================================================
    Forms - Responsive
    ============================================================================= */
@@ -606,6 +695,38 @@ table td[data-label]::before {
     .btn-sm {
         padding: 4px 8px;
         font-size: 11px;
+    }
+
+    /* Chart.js Mobile Fix - Smaller chart on mobile */
+    .chart-container {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .chart-container canvas {
+        max-height: 250px !important;
+    }
+
+    /* Quick Actions Grid on Mobile */
+    .quick-actions {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .quick-actions h3 {
+        margin-bottom: 15px;
+        color: var(--dark-color);
+    }
+
+    .quick-actions > div {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .quick-actions .btn {
+        width: 100%;
+        margin: 0;
     }
 }
 
