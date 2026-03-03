@@ -25,7 +25,7 @@
             <li><a href="{% url 'project_list' %}" class="{% if request.resolver_match.url_name == 'project_list' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_update' or request.resolver_match.url_name == 'project_delete' %}active{% endif %}">Projects</a></li>
             
             {% if user.is_authenticated %}
-            <!-- User is logged in - show username with dropdown -->
+            <!-- User is logged in -->
             <li style="position: relative;">
                 <a href="#" class="user-menu" onclick="toggleUserMenu(); return false;">
                     {{ user.username }} ▼
@@ -35,7 +35,7 @@
                 </div>
             </li>
             {% else %}
-            <!-- User is not logged in - show SignIn/SignUp -->
+            <!-- User is not logged in -->
             <li><a href="{% url 'login' %}" style="background-color: #28a745;">Sign In</a></li>
             <li><a href="{% url 'signup' %}" style="background-color: #007bff;">Sign Up</a></li>
             {% endif %}
@@ -54,17 +54,26 @@
             <a href="{% url 'project_list' %}" class="{% if request.resolver_match.url_name == 'project_list' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_update' or request.resolver_match.url_name == 'project_delete' %}active{% endif %}">Projects</a>
             
             {% if user.is_authenticated %}
-            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
-            <a href="#" class="user-menu" onclick="toggleUserMenuInSideMenu(); return false;">
-                {{ user.username }} ▼
-            </a>
-            <div id="user-dropdown-side">
-                <a href="{% url 'logout' %}">Logout</a>
+            <!-- User section with DIRECT Logout button -->
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid rgba(255,255,255,0.2);">
+                <div style="padding: 15px 20px; background: rgba(255,255,255,0.1); border-radius: 8px; margin-bottom: 15px;">
+                    <div style="color: rgba(255,255,255,0.7); font-size: 12px; margin-bottom: 5px;">Logged in as</div>
+                    <div style="color: var(--white); font-weight: 600; font-size: 16px;">{{ user.username }}</div>
+                </div>
+                <a href="{% url 'logout' %}" style="background-color: #dc3545; color: var(--white); display: block; text-align: center; padding: 15px 20px; border-radius: 8px; font-weight: 600;">
+                    🚪 Logout
+                </a>
             </div>
             {% else %}
-            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
-            <a href="{% url 'login' %}" style="background-color: #28a745;">Sign In</a>
-            <a href="{% url 'signup' %}" style="background-color: #007bff;">Sign Up</a>
+            <!-- Login section -->
+            <div style="margin-top: 20px; padding-top: 20px; border-top: 2px solid rgba(255,255,255,0.2);">
+                <a href="{% url 'login' %}" style="background-color: #28a745; color: var(--white); display: block; text-align: center; padding: 15px 20px; border-radius: 8px; font-weight: 600; margin-bottom: 10px;">
+                    Sign In
+                </a>
+                <a href="{% url 'signup' %}" style="background-color: #007bff; color: var(--white); display: block; text-align: center; padding: 15px 20px; border-radius: 8px; font-weight: 600;">
+                    Create Account
+                </a>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -107,19 +116,13 @@
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         }
         
-        function toggleUserMenuInSideMenu() {
-            var dropdown = document.getElementById('user-dropdown-side');
-            dropdown.classList.toggle('active');
-        }
-        
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             var userMenu = event.target.closest('.user-menu');
             if (!userMenu) {
-                var dropdowns = document.querySelectorAll('#user-dropdown, #user-dropdown-side');
+                var dropdowns = document.querySelectorAll('#user-dropdown');
                 dropdowns.forEach(function(dropdown) {
                     dropdown.style.display = 'none';
-                    dropdown.classList.remove('active');
                 });
             }
         });

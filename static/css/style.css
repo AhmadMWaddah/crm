@@ -141,18 +141,19 @@ body {
 .nav-side-menu {
     position: fixed;
     top: 0;
-    left: -280px;
+    right: -280px;  /* Opens from RIGHT */
+    left: auto;
     width: 280px;
     height: 100%;
     background: var(--dark-color);
     z-index: 1999;
-    transition: left 0.3s ease;
+    transition: right 0.3s ease;
     overflow-y: auto;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    box-shadow: -2px 0 10px rgba(0,0,0,0.3);
 }
 
 .nav-side-menu.active {
-    left: 0;
+    right: 0;  /* Slide in from right */
 }
 
 .nav-side-menu .navbar-nav {
