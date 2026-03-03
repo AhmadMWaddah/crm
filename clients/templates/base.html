@@ -15,10 +15,11 @@
     <nav class="navbar">
         <a href="{% url 'dashboard' %}" class="navbar-brand">CRM</a>
         
-        <!-- Mobile Menu Toggle -->
-        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        <!-- Mobile Menu Toggle (Hamburger) -->
+        <button class="mobile-menu-toggle" onclick="toggleSideMenu()" aria-label="Toggle menu">☰</button>
         
-        <ul class="navbar-nav" id="navbar-nav">
+        <!-- Desktop Navigation -->
+        <ul class="navbar-nav">
             <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li><a href="{% url 'client_list' %}" class="{% if request.resolver_match.url_name == 'client_list' or request.resolver_match.url_name == 'client_create' or request.resolver_match.url_name == 'client_update' or request.resolver_match.url_name == 'client_delete' %}active{% endif %}">Clients</a></li>
             <li><a href="{% url 'project_list' %}" class="{% if request.resolver_match.url_name == 'project_list' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_update' or request.resolver_match.url_name == 'project_delete' %}active{% endif %}">Projects</a></li>
@@ -29,7 +30,7 @@
                 <a href="#" class="user-menu" onclick="toggleUserMenu(); return false;">
                     {{ user.username }} ▼
                 </a>
-                <div id="user-dropdown" style="display: none;">
+                <div id="user-dropdown">
                     <a href="{% url 'logout' %}">Logout</a>
                 </div>
             </li>
@@ -40,6 +41,33 @@
             {% endif %}
         </ul>
     </nav>
+    
+    <!-- Mobile Side Menu -->
+    <div class="nav-overlay" id="nav-overlay" onclick="toggleSideMenu()"></div>
+    
+    <div class="nav-side-menu" id="nav-side-menu">
+        <button class="nav-close-btn" onclick="toggleSideMenu()" aria-label="Close menu">&times;</button>
+        
+        <div class="navbar-nav">
+            <a href="{% url 'dashboard' %}">Dashboard</a>
+            <a href="{% url 'client_list' %}" class="{% if request.resolver_match.url_name == 'client_list' or request.resolver_match.url_name == 'client_create' or request.resolver_match.url_name == 'client_update' or request.resolver_match.url_name == 'client_delete' %}active{% endif %}">Clients</a>
+            <a href="{% url 'project_list' %}" class="{% if request.resolver_match.url_name == 'project_list' or request.resolver_match.url_name == 'project_create' or request.resolver_match.url_name == 'project_update' or request.resolver_match.url_name == 'project_delete' %}active{% endif %}">Projects</a>
+            
+            {% if user.is_authenticated %}
+            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
+            <a href="#" class="user-menu" onclick="toggleUserMenuInSideMenu(); return false;">
+                {{ user.username }} ▼
+            </a>
+            <div id="user-dropdown-side">
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+            {% else %}
+            <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 10px 0;">
+            <a href="{% url 'login' %}" style="background-color: #28a745;">Sign In</a>
+            <a href="{% url 'signup' %}" style="background-color: #007bff;">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
 
     <div class="container">
         {% if messages %}
@@ -58,11 +86,20 @@
     <!-- HTMX Library -->
     <script src="https://unpkg.com/htmx.org@1.9.12"></script>
     
-    <!-- Mobile Menu Script -->
+    <!-- Navigation Scripts -->
     <script>
-        function toggleMobileMenu() {
-            var nav = document.getElementById('navbar-nav');
-            nav.classList.toggle('active');
+        function toggleSideMenu() {
+            var menu = document.getElementById('nav-side-menu');
+            var overlay = document.getElementById('nav-overlay');
+            menu.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (menu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         }
         
         function toggleUserMenu() {
@@ -70,12 +107,30 @@
             dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
         }
         
+        function toggleUserMenuInSideMenu() {
+            var dropdown = document.getElementById('user-dropdown-side');
+            dropdown.classList.toggle('active');
+        }
+        
         // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
-            var dropdown = document.getElementById('user-dropdown');
             var userMenu = event.target.closest('.user-menu');
-            if (dropdown && !userMenu) {
-                dropdown.style.display = 'none';
+            if (!userMenu) {
+                var dropdowns = document.querySelectorAll('#user-dropdown, #user-dropdown-side');
+                dropdowns.forEach(function(dropdown) {
+                    dropdown.style.display = 'none';
+                    dropdown.classList.remove('active');
+                });
+            }
+        });
+        
+        // Close side menu on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                var menu = document.getElementById('nav-side-menu');
+                if (menu.classList.contains('active')) {
+                    toggleSideMenu();
+                }
             }
         });
     </script>

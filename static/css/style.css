@@ -115,6 +115,112 @@ body {
     color: var(--white);
     font-size: 24px;
     cursor: pointer;
+    padding: 5px;
+}
+
+/* Side Menu Overlay */
+.nav-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Side Menu */
+.nav-side-menu {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    background: var(--dark-color);
+    z-index: 1999;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+}
+
+.nav-side-menu.active {
+    left: 0;
+}
+
+.nav-side-menu .navbar-nav {
+    display: flex !important;
+    flex-direction: column;
+    padding: 20px 0;
+    gap: 5px;
+}
+
+.nav-side-menu .navbar-nav a {
+    padding: 15px 20px;
+    color: var(--white);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.nav-side-menu .navbar-nav a:hover,
+.nav-side-menu .navbar-nav a.active {
+    background: rgba(255,255,255,0.1);
+    border-left-color: var(--primary-color);
+}
+
+.nav-side-menu .user-menu {
+    background: transparent !important;
+    border-left: 3px solid transparent;
+}
+
+.nav-side-menu .user-menu:hover {
+    background: rgba(255,255,255,0.1) !important;
+    border-left-color: var(--primary-color);
+}
+
+#user-dropdown {
+    position: static;
+    box-shadow: none;
+    margin-top: 0;
+    background: rgba(0,0,0,0.2);
+    display: none;
+}
+
+#user-dropdown.active {
+    display: block;
+}
+
+#user-dropdown a {
+    color: var(--danger-color) !important;
+    padding-left: 30px !important;
+}
+
+/* Close button for side menu */
+.nav-close-btn {
+    display: block;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--white);
+    font-size: 28px;
+    cursor: pointer;
+    padding: 5px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.nav-close-btn:hover {
+    opacity: 1;
 }
 
 /* =============================================================================
@@ -566,7 +672,6 @@ table td[data-label]::before {
    ============================================================================= */
 @media (max-width: 768px) {
     .navbar {
-        flex-wrap: wrap;
         padding: 10px 15px;
     }
     
@@ -574,25 +679,14 @@ table td[data-label]::before {
         font-size: 18px;
     }
     
+    /* Show hamburger menu button */
     .mobile-menu-toggle {
         display: block;
     }
     
+    /* Hide desktop navigation */
     .navbar-nav {
         display: none;
-        width: 100%;
-        flex-direction: column;
-        gap: 5px;
-        margin-top: 15px;
-    }
-    
-    .navbar-nav.active {
-        display: flex;
-    }
-    
-    .navbar-nav a {
-        padding: 10px;
-        text-align: center;
     }
     
     .container {
