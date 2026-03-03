@@ -95,22 +95,23 @@
     const ctx = document.getElementById('statusChart').getContext('2d');
     
     // Check if mobile based on screen width
-    function isMobile() {
-        return window.innerWidth <= 768;
-    }
+    const isMobile = window.innerWidth <= 768;
+    
+    // Prepare data from Django context
+    const statusData = {
+        labels: [{% for status, count in status_data.items %}'{{ status|title }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+        counts: [{% for status, count in status_data.items %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+        colors: ['#28a745', '#6c757d', '#ffc107']
+    };
     
     const statusChart = new Chart(ctx, {
-        type: isMobile() ? 'bar' : 'doughnut',  // Bar chart on mobile, doughnut on desktop
+        type: isMobile ? 'bar' : 'doughnut',
         data: {
-            labels: [{% for status, count in status_data.items %}'{{ status|title }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            labels: statusData.labels,
             datasets: [{
                 label: 'Projects',
-                data: [{% for status, count in status_data.items %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
-                backgroundColor: [
-                    '#28a745',  // Active - Green
-                    '#6c757d',  // Completed - Gray
-                    '#ffc107'   // On Hold - Yellow
-                ],
+                data: statusData.counts,
+                backgroundColor: statusData.colors,
                 borderWidth: 0
             }]
         },
@@ -119,18 +120,31 @@
             maintainAspectRatio: true,
             plugins: {
                 legend: {
-                    display: true,  // Always show legend
+                    display: true,
                     position: 'bottom',
                     labels: {
-                        padding: 15,
+                        padding: 20,
                         font: {
-                            size: isMobile() ? 11 : 12
+                            size: isMobile ? 11 : 12
                         },
-                        usePointStyle: isMobile()  // Point style on mobile
+                        usePointStyle: true,
+                        pointStyle: 'circle',
+                        generateLabels: function(chart) {
+                            // Custom legend to show all statuses with their colors
+                            const data = chart.data;
+                            return data.labels.map(function(label, i) {
+                                return {
+                                    text: label,
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    hidden: false,
+                                    index: i
+                                };
+                            });
+                        }
                     }
                 }
             },
-            scales: isMobile() ? {
+            scales: isMobile ? {
                 x: {
                     display: true,
                     ticks: {
