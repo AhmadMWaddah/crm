@@ -93,24 +93,32 @@ WSGI_APPLICATION = 'crm_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# Get database URL from environment (Render/Supabase provide this)
-DATABASE_URL = config('DATABASE_URL', default='sqlite:///db.sqlite3')
-
-# Parse database URL for PostgreSQL connection
-tmpPostgres = urlparse(DATABASE_URL)
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': tmpPostgres.path.replace('/', ''),
-        'USER': tmpPostgres.username,
-        'PASSWORD': tmpPostgres.password,
-        'HOST': tmpPostgres.hostname,
-        'PORT': tmpPostgres.port or 5432,  # Use port from URL or default to 5432
-        'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
-        'CONN_MAX_AGE': 600,  # Persistent connections for production
+# Use SQLite for development, PostgreSQL for production
+# Controlled by DEBUG setting (True = Dev/SQLite, False = Prod/PostgreSQL)
+if DEBUG:
+    # SQLite for local development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    # PostgreSQL for production (Render/Supabase)
+    DATABASE_URL = config('DATABASE_URL')
+    tmpPostgres = urlparse(DATABASE_URL)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': tmpPostgres.path.replace('/', ''),
+            'USER': tmpPostgres.username,
+            'PASSWORD': tmpPostgres.password,
+            'HOST': tmpPostgres.hostname,
+            'PORT': tmpPostgres.port or 5432,
+            'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
+            'CONN_MAX_AGE': 600,  # Persistent connections for production
+        }
+    }
 
 
 # Password validation

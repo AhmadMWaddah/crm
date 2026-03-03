@@ -21,7 +21,7 @@ from accounts.views import dashboard
 from django.conf import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('panel/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('clients/', include('clients.urls')),
     path('projects/', include('projects.urls')),

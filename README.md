@@ -1,3 +1,5 @@
+![Django](https://github.com/AhmadMWaddah/crm/blob/master/CRM_Thumbnail.png)
+
 # Django CRM - Client Management System
 
 A modern, full-featured Client Management System built with Django, designed for freelancers and small businesses to manage their clients and projects efficiently.

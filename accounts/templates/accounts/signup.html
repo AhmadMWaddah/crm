@@ -2,31 +2,6 @@
 
 {% block title %}Sign Up - CRM{% endblock %}
 
-{% block extra_css %}
-<style>
-    .auth-wrapper {
-        max-width: 400px;
-        margin: 0 auto;
-    }
-    .helptext {
-        display: block;
-        margin-top: 5px;
-        font-size: 12px;
-        color: #6c757d;
-    }
-    .errorlist {
-        color: #721c24;
-        font-size: 13px;
-        margin-top: 5px;
-        list-style: none;
-        padding: 0;
-    }
-    .errorlist li::before {
-        content: "• ";
-    }
-</style>
-{% endblock %}
-
 {% block content %}
 <div class="auth-wrapper">
     <div class="card">
@@ -80,7 +55,7 @@
         </form>
     </div>
 
-    <div style="text-align: center; margin-top: 20px; color: #666;">
+    <div style="text-align: center; margin-top: 20px; color: #6c757d;">
         Already have an account? <a href="{% url 'login' %}">Sign in</a>
     </div>
 </div>
