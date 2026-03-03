@@ -93,13 +93,18 @@
 <script>
     // Projects by Status Chart
     const ctx = document.getElementById('statusChart').getContext('2d');
-    const isMobile = window.innerWidth <= 768;
+    
+    // Check if mobile based on screen width
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
     
     const statusChart = new Chart(ctx, {
-        type: isMobile ? 'bar' : 'doughnut',  // Bar chart on mobile, doughnut on desktop
+        type: isMobile() ? 'bar' : 'doughnut',  // Bar chart on mobile, doughnut on desktop
         data: {
             labels: [{% for status, count in status_data.items %}'{{ status|title }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
             datasets: [{
+                label: 'Projects',
                 data: [{% for status, count in status_data.items %}{{ count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
                 backgroundColor: [
                     '#28a745',  // Active - Green
@@ -119,13 +124,13 @@
                     labels: {
                         padding: 15,
                         font: {
-                            size: isMobile ? 11 : 12  // Smaller font on mobile
+                            size: isMobile() ? 11 : 12
                         },
-                        usePointStyle: isMobile  // Use point style on mobile for better visibility
+                        usePointStyle: isMobile()  // Point style on mobile
                     }
                 }
             },
-            scales: isMobile ? {
+            scales: isMobile() ? {
                 x: {
                     display: true,
                     ticks: {
