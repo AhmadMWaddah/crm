@@ -5,6 +5,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.urls import reverse_lazy
 from django.db.models import Q
+from django.core.cache import cache
 from .models import Client
 from .forms import ClientForm
 
@@ -49,6 +50,8 @@ class ClientCreateView(LoginRequiredMixin, CreateView):
         """Set the user field to the current user before saving."""
         form.instance.user = self.request.user
         messages.success(self.request, 'Client created successfully!')
+        # Clear dashboard cache for this user
+        cache.delete(f'dashboard_user_{self.request.user.id}')
         return super().form_valid(form)
 
 
@@ -67,6 +70,8 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         """Show success message after update."""
         messages.success(self.request, 'Client updated successfully!')
+        # Clear dashboard cache for this user
+        cache.delete(f'dashboard_user_{self.request.user.id}')
         return super().form_valid(form)
 
 
@@ -84,6 +89,8 @@ class ClientDeleteView(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         """Show success message after deletion."""
         messages.success(request, 'Client deleted successfully!')
+        # Clear dashboard cache for this user
+        cache.delete(f'dashboard_user_{request.user.id}')
         return super().delete(request, *args, **kwargs)
 
 

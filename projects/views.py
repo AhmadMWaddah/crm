@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.core.cache import cache
 from .models import Project
 from .forms import ProjectForm
 
@@ -50,6 +51,8 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         """Set the user field to the current user before saving."""
         form.instance.user = self.request.user
         messages.success(self.request, 'Project created successfully!')
+        # Clear dashboard cache for this user
+        cache.delete(f'dashboard_user_{self.request.user.id}')
         return super().form_valid(form)
 
 
@@ -74,6 +77,8 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         """Show success message after update."""
         messages.success(self.request, 'Project updated successfully!')
+        # Clear dashboard cache for this user
+        cache.delete(f'dashboard_user_{self.request.user.id}')
         return super().form_valid(form)
 
 
@@ -91,4 +96,6 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         """Show success message after deletion."""
         messages.success(request, 'Project deleted successfully!')
+        # Clear dashboard cache for this user
+        cache.delete(f'dashboard_user_{request.user.id}')
         return super().delete(request, *args, **kwargs)
